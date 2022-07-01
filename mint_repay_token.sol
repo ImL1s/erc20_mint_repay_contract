@@ -4,14 +4,14 @@ pragma solidity ^0.8.0;
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.6.0/contracts/token/ERC20/ERC20.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.6.0/contracts/access/Ownable.sol";
 
-contract USS is ERC20,Ownable {
+contract MyToken is ERC20,Ownable {
 
     ERC20 public usdt;
 
-    event MintUss(address user ,uint amount);
-    event RepayUss(address user ,uint amount);
+    event Mint(address user ,uint amount);
+    event Repay(address user ,uint amount);
 
-    constructor(address usdtAddress) ERC20("USS", "USS") {
+    constructor(address usdtAddress) ERC20("MyToken", "MyToken") {
         usdt = ERC20(usdtAddress);
     }
 
@@ -26,7 +26,7 @@ contract USS is ERC20,Ownable {
         require(allowance >= amount, "Check the USDt allowance");
         usdt.transferFrom(msg.sender, address(this), amount);
         _mint(msg.sender, amount);
-        emit MintUss(msg.sender, amount);
+        emit Mint(msg.sender, amount);
     }
 
     function repay(uint amount) public {
@@ -35,6 +35,6 @@ contract USS is ERC20,Ownable {
         require(userUssBalance >= amount, "You don't have enough USS!");
         _burn(msg.sender, amount);
         usdt.transfer(msg.sender, amount);
-        emit RepayUss(msg.sender, amount);
+        emit Repay(msg.sender, amount);
     }
 }
